@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Kushagra Tiwari and Shengmin Liu (website template by Ryan Tsang)" />
-  <title>Title of Website</title>
+  <meta name="author" content="Sean Cohen and George Burin (website template by Ryan Tsang)" />
+  <title>Screaming Balls</title>
   <!-- <link rel="stylesheet" type="text/css" href="assets/github-markdown-light.css" /> -->
   <link rel="stylesheet" href="assets/github-markdown-light.css" />
   <link rel="stylesheet" href="assets/style-customization.css" />
@@ -15,27 +15,25 @@
 </head>
 <article class="markdown-body">
 <header id="title-block-header">
-<h1 class="title">I changed the title</h1>
-<p class="subtitle"><blockquote><b>EEC172 Final Project Webpage Example</b><br/> Note to current students: this is an <i>example</i> webpage and may not fulfill all stated requirements of the current quarter's assignment.<br/>The website source is hosted <a href="https://github.com/ucd-eec172/project-website-example">on github</a>. </blockquote></p>
-<p class="author"><strong>Kushagra Tiwari and Shengmin Liu</strong>
+<h1 class="title">Screaming Balls Game!</h1>
+<p class="subtitle"><blockquote><b>EEC172 Final Project Webpage. <br/>The website source is hosted <a href="https://github.com/georgeburin/eec172_website">on github</a>. </blockquote></p>
+<p class="author"><strong>Sean Cohen and George Burin</strong>
 (website template by Ryan Tsang)</p>
-<p class="date"><em>EEC172 WQ24</em></p>
+<p class="date"><em>EEC172 SQ24</em></p>
 <div class="abstract">
-<div class="abstract-title"><h2>Description</h2></div>
-Hydroponics is a technique where plants are grown in a nutrient-rich
-solution. This soil- free technique has been gaining traction recently
-due to its ability to optimize resource utilization. However, since
-plants are highly sensitive to changes in TDS, hydroponic setups require
-continuous TDS monitoring and adjustment. NutriSense, our device, allows
-hobbyists to achieve ideal hydroponics results on a small scale. It
-continuously monitors TDS and temperature, allowing the user to remotely
-read the status over AWS IoT cloud. The user can remotely enter upper
-and lower thresholds for TDS, and the device will automatically add
-nutrient solution or water to keep the TDS bounded by the thresholds.
-The device can also be configured to send notifications over SNS when
-the TDS value goes outside thresholds. <br/><br/> Our source code can be
+<div class="abstract-title"><h2>Description</h2>
+We have made a game that allows a user to play fully without using a traditional controller or any buttons.<br/>
+Our game follows a simple formula. You controll a small ball on the screen that rolls based on the tilt of the accelerometer inside of the CC3200 board.
+If you tilt the board heavily in a specific direction the ball will start to roll that direction. Try to make it into objectives and stay there to collect points! You can compete for a global highscore or simply play for fun offline. <br/><br/>
+
+<h3 id="Gamemodes">The Three Gamemodes</h3>
+Each gamemode is differentiated by how it utilizes the microphone. <br/><br/>
+<li><b>Silent</b> mode makes it so the game does not even access the microphone. <ul>It is a way to play this game in areas where you can't make a lot of noise. As the controls are the easiest to manage here you only get 2 points per objective.</ul> </li>
+<li><b>Classic</b> mode requires you to make noise in order for the ball to move. <ul>The ball quickly decelerates if you become quiet. You get 4 points per score in Classic.</ul></li>
+<li><b>Screamer</b> mode has the ball care about the mic significantly more than classic. <ul>This meakes it extremely difficult to control, but you only need to touch the objective to score. It is still very difficult to control so you get 5 points per objective in Screamer.</ul></li>
+<br/><br/> Our source code can be
 found <!-- replace this link -->
-<a href="https://github.com/ucd-eec172/project-website-example"> here
+<a href="https://github.com/SeaCohen/Screaming_Ball_Source_Code"> here
 (placeholder)</a>.<br />
 <div style="display:flex;flex-wrap:wrap;justify-content:space-evenly;padding-top:20px"> <div style="display: inline-block; vertical-align: bottom;"> <img src="./media/Image_001.jpg" style="width:auto;height:2in"/> <!-- <span class="caption"> </span> --> </div> <div style="display: inline-block; vertical-align: bottom;"> <img src="./media/Image_002.jpg" style="width:auto;height:2in" /> <!-- <span class="caption"> </span> --> </div> </div>
 <h2>Video Demo</h2> <div style="text-align:center;margin:auto;max-width:560px"> <div style="padding-bottom:56.25%;position:relative;height:0;"> <iframe style="left:0;top:0;width:100%;height:100%;position:absolute;" width="560" height="315" src="https://www.youtube.com/embed/wSRtnAEZhmc?si=3vQXNj4h0WkW-F-q" title="YouTube video player" frameborder="0" allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> </div> </div> 
