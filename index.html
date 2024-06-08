@@ -57,35 +57,22 @@ id="toc-ystem-architecture">System Architecture</a></li>
 <li><a href="#implementation" id="toc-implementation">Implementation</a>
 <ul>
 <li><a href="#cc3200"
-id="toc-cc3200">CC3200 Evaluation
+id="toc-cc3200">CC3200
 Board</a></li>
-<li><a href="#functional-blocks-master"
-id="toc-functional-blocks-master">Functional Blocks: Master</a>
+<li><a href="#functional-blocks"
+id="toc-functional-blocks">Functional Blocks</a>
 <ul>
 <li><a href="#aws-iot-core" id="toc-aws-iot-core">AWS IoT Core</a></li>
 <li><a href="#oled-display" id="toc-oled-display">OLED Display</a></li>
-<li><a href="#ir-receiver" id="toc-ir-receiver">IR Receiver</a></li>
-</ul></li>
-<li><a href="#functional-blocks-slave"
-id="toc-functional-blocks-slave">Functional Blocks: Slave</a>
-<ul>
-<li><a href="#analog-to-digital-converter-adc-board"
-id="toc-analog-to-digital-converter-adc-board">Analog-To-Digital
-Converter (ADC) Board</a></li>
-<li><a href="#thermistor" id="toc-thermistor">Thermistor</a></li>
-<li><a href="#tds-sensor-board" id="toc-tds-sensor-board">TDS Sensor
-Board</a></li>
-<li><a href="#pumps-and-control-circuit"
-id="toc-pumps-and-control-circuit">Pumps and Control Circuit</a></li>
-</ul></li>
+<li><a href="#microphone" id="toc-microphone">Microphone</a></li>
 </ul></li>
 <li><a href="#challenges" id="toc-challenges">Challenges</a>
 <ul>
-<li><a href="#probe-channel-polarization"
-id="toc-probe-channel-polarization">Probe Channel Polarization</a></li>
-<li><a href="#current-limitation-of-gpio-pins"
-id="toc-current-limitation-of-gpio-pins">Current Limitation of GPIO
-Pins</a></li>
+<li><a href="#ibuilt-adc"
+id="toc-ibuilt-adc">Inbuilt ADC</a></li>
+<li><a href="#aws-problems"
+id="toc-aws-problems">AWS Problems
+</a></li>
 <li><a href="#solution-to-challenges"
 id="toc-solution-to-challenges">Solution to Challenges</a></li>
 </ul></li>
@@ -112,7 +99,7 @@ BOM</a></li>
 
 
 <h1 id="design">Design</h1>
-<h2 id="Functional Specification">Functional Specification</h2>
+<h2 id="functional-specification">Functional Specification</h2>
 <img src="./media/BallGameFSM.jpg" style="width:100%;height:auto"/>
 <div style="display:flex;flex-wrap:wrap;justify-content:space-evenly;">
   <div style="display:inline-block;vertical-align:top;flex:1 0 400px;">
@@ -178,42 +165,23 @@ unit. We utilized the board's SPI to connect with the inbuilt accelerometer, inb
 </div>
 
 <h1 id="challenges">Challenges</h1>
-<p>The most significant challenge we faced while developing this
-prototype was of inaccurate and inconsistent Electrical Conductivity
-(EC) measurements. This occurred due to two reasons: probe channel
-polarization and current limitations of GPIO pins.</p>
-<h2 id="probe-channel-polarization">Probe Channel Polarization</h2>
-<p>Our first design for the probe was simply two copper rods, which
-would add as electrodes. This probe would be connected in series with a
-1000-ohm resistor to act as a voltage divider. We would simply connect
-the probe to VCC and measure the voltage divider through the ADC,
-allowing us to calculate the EC. However, when we used the probe for a
-few minutes, we realized that the EC value would continue to rise. This
-is because the DC current causes an ionized channel to build up between
-the two electrodes in the water. This cause inconsistent EC readings as
-time goes on.</p>
-<h2 id="current-limitation-of-gpio-pins">Current Limitation of GPIO
-Pins</h2>
-<p>Our next idea was to try using the GPIO pins to power the probe,
-since we can turn it off when not needed, preventing excessive
-polarization. However, the GPIO pins are current limited, and any
-control circuit with a transistor would introduce extra voltage drops.
-Therefore, the simple two-probe implementation was not feasible.</p>
+<p>The most significant challenges we faced were due to the interactions of the inbuilt ADC and the internet connection</p>
+<h2 id="ibuilt-adc">Inbuilt ADC</h2>
+<p>Our major issue from the ADC came from that we have never worked with any form of ADC before. We had a sample program built in from Texas Instruments that had the ADC go directly to the console.
+  However, we needed the ADC to output a floating point value, so we ended up spending a lot of our time just debugging the code for that ADC and it had the behaviors of every "mic enabled" game mode each time we would edit it.
+  At first, we had it work by configuring itself every time it was called, but that caused issues later on (see section on AWS). We eventually had everything work, but there was a struggle involved in learning how to use this new feature.
+</p>
+<h2 id="aws-problems">AWS and Internet Connectivity</h2>
+<p>AWS also presented many issues to us even after we were able to post and get highscores. The main issue came from the fact that AWS would simply halt the entire program if it was run after we read the microphone input.
+  This was a notable issue for our microphone centric game. We would also recieve errors for things being defined several times within our Get function if it was placed "lower down" in the code, something which should have no meaning for functions floating in global namespace.
+  We are still unsure why that bug happened, but the program works now!
+</p>
 <h2 id="solution-to-challenges">Solution to Challenges</h2>
-<p>We realized that using DC current to measure EC was not feasible.
-Therefore, we purchased a standalone EC measurement board from CQRobot.
-This inexpensive solution ($8) used a low-voltage, low-current AC signal
-to prevent polarization. The board would convert the AC voltage drop
-across the solution to a DC analog voltage, which would then be read by
-our ADC. After calibrating the setup using a commercial TDS pen, the
-results were accurate within 3%, and would not drift by more than 0.5%
-over time.</p>
+<p>We ended up completely reworking the entire microphone function of the game in order to make it so our internet connectivity worked, but we also developed a failstate mode in case there is no internet access.
+  The game can also be run completely without input from the internet! We included a choice on bootup for if the user wants to compete on the global leaderboard so that if an issue does crop up, AWS shuts down, etc our game will always at least be playable.
+</p>
 <h1 id="future-work">Future Work</h1>
-<p>Given more time, we had the idea of developing a web app to allow
-users to control the device from their cell phone. Another idea we
-wanted to implement in the future is adding a grow light and pH
-controller to maintain a more suitable and stable environment for
-different plants to grow.</p>
+<p>Given more time, we would rework the movement system with the microphone to feel better to control, add a deeper menu with a larger variety of gamemodes, or possibly even allow for a custom gamemode where user selects challenges to make the game harder for more points (similar to the Pact of Punishment in Hades).</p>
 <h1 id="finalized-bom">Finalized BOM</h1>
 <!-- you can convert google sheet cells to html for free using a converter
   like https://tabletomarkdown.com/convert-spreadsheet-to-html/ -->
